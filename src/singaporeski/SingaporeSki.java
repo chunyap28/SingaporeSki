@@ -29,16 +29,22 @@ public class SingaporeSki {
         
         NavigateObject max = new NavigateObject(0,0);
         
+        int maxi = 0;
+        int maxj = 0;
         for(int i=0; i < map.length; i++){
             for(int j=0; j < map[i].length; j++){
                 //solve for each position
                 NavigateObject maxAtPos = _solveRoute(map, i, j);
+                //System.out.printf("Result %d %d: %s, comparing with %s: %d\n", i, j, maxAtPos, max, maxAtPos.compareTo(max));
                 if( maxAtPos.compareTo(max) > 0 ){//greater than max
+                    maxi = i;
+                    maxj = j;
                     max = maxAtPos;
                 }
             }
         }
 
+        //System.out.printf("max i: %d, j: %d\n", maxi, maxj);
         return max;
     }
     
@@ -136,9 +142,9 @@ class NavigateObject implements Comparable<NavigateObject>{
 
     @Override
     public int compareTo(NavigateObject obj) {
-        if( (this.length > obj.length && this.depth >= obj.depth) ||
-            (this.length >= obj.length && this.depth > obj.depth) ){
-            return 1;   //greater
+        if(this.length > obj.length || 
+           (this.length == obj.length && this.depth > obj.depth)){
+            return 1;
         }else if( this.length == obj.length && this.depth == obj.depth ){
             return 0;   //equals
         }else{
